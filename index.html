@@ -1,0 +1,1756 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пономарев Андрей — Графический дизайнер</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0b;
+      --surface: #141416;
+      --surface-2: #1c1c1f;
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #f4f4f5;
+      --muted: #a1a1aa;
+      --accent: #c8ff00;
+      --accent-dim: rgba(200, 255, 0, 0.12);
+      --serif: "Instrument Serif", Georgia, serif;
+      --sans: "Manrope", system-ui, sans-serif;
+      --radius: 16px;
+      --max: 1120px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(200, 255, 0, 0.08), transparent),
+        radial-gradient(circle at 90% 80%, rgba(120, 80, 255, 0.06), transparent);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(var(--max), calc(100% - 48px));
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 0;
+      backdrop-filter: blur(12px);
+      background: rgba(10, 10, 11, 0.7);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+
+    header.scrolled { border-bottom-color: var(--border); }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-style: italic;
+    }
+
+    nav { display: flex; gap: 32px; }
+
+    nav a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    nav a:hover { color: var(--text); }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text);
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 0 80px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: var(--accent-dim);
+      border: 1px solid rgba(200, 255, 0, 0.2);
+      border-radius: 100px;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 24px;
+    }
+
+    .hero-badge::before {
+      content: "";
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 em { font-style: italic; color: var(--accent); }
+
+    .hero-desc {
+      font-size: 1.125rem;
+      color: var(--muted);
+      max-width: 480px;
+      margin-bottom: 40px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 14px 28px;
+      border-radius: 100px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      font-family: var(--sans);
+      cursor: pointer;
+      border: none;
+      transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #0a0a0b;
+      box-shadow: 0 0 40px rgba(200, 255, 0, 0.25);
+    }
+
+    .btn-primary:hover { box-shadow: 0 0 60px rgba(200, 255, 0, 0.35); }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-ghost:hover { background: var(--surface); }
+
+    .hero-visual {
+      position: relative;
+      aspect-ratio: 1;
+      max-width: 420px;
+      margin-left: auto;
+    }
+
+    .hero-showcase {
+      position: absolute;
+      inset: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+    }
+
+    .hero-showcase img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 32px rgba(0,0,0,0.4));
+    }
+
+    .hero-float {
+      position: absolute;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 0.875rem;
+      backdrop-filter: blur(8px);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .hero-float-1 { top: 8%; left: -12%; animation-delay: 0s; }
+    .hero-float-2 { bottom: 12%; right: -10%; animation-delay: -3s; }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    .hero-float strong {
+      display: block;
+      font-size: 1.25rem;
+      color: var(--accent);
+    }
+
+    section { padding: 100px 0; }
+
+    .section-label {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 48px;
+      max-width: 600px;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 64px;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--muted);
+      margin-bottom: 20px;
+      font-size: 1.0625rem;
+    }
+
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+    }
+
+    .stat-value {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-style: italic;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-label { font-size: 0.875rem; color: var(--muted); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .skill-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .skill-card:hover {
+      border-color: rgba(200, 255, 0, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .skill-icon {
+      width: 48px; height: 48px;
+      background: var(--accent-dim);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+    }
+
+    .skill-card h3 {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .skill-card p { font-size: 0.875rem; color: var(--muted); }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+    .tag {
+      font-size: 0.75rem;
+      padding: 4px 12px;
+      background: var(--surface-2);
+      border-radius: 100px;
+      color: var(--muted);
+    }
+
+    .tools-row {
+      margin-bottom: 48px;
+    }
+
+    .tools-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .tool-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.9375rem;
+      font-weight: 600;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .tool-chip:hover {
+      border-color: rgba(200, 255, 0, 0.3);
+      background: var(--accent-dim);
+    }
+
+    .tool-chip-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .filter-btn {
+      padding: 10px 20px;
+      border-radius: 100px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: var(--sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .filter-btn:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+
+    .filter-btn.active {
+      background: var(--accent);
+      color: #0a0a0b;
+      border-color: var(--accent);
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .gallery-bundle {
+      cursor: default;
+    }
+
+    .gallery-bundle:hover {
+      transform: none;
+    }
+
+    .gallery-bundle.expanded {
+      grid-column: 1 / -1;
+      border-color: rgba(200, 255, 0, 0.25);
+    }
+
+    .bundle-toggle {
+      width: 100%;
+      display: block;
+      border: none;
+      background: none;
+      padding: 0;
+      cursor: pointer;
+      text-align: left;
+      color: inherit;
+      font-family: inherit;
+    }
+
+    .bundle-toggle .gallery-thumb {
+      position: relative;
+    }
+
+    .bundle-badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 2;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 100px;
+      background: var(--accent);
+      color: #0a0a0b;
+    }
+
+    .bundle-hint {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 10px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+
+    .gallery-bundle.expanded .bundle-hint svg {
+      transform: rotate(180deg);
+    }
+
+    .bundle-hint svg {
+      transition: transform 0.3s;
+    }
+
+    .bundle-toggle:hover .bundle-hint {
+      color: var(--accent);
+    }
+
+    .bundle-expand {
+      display: grid;
+      grid-template-rows: 0fr;
+      transition: grid-template-rows 0.4s ease;
+    }
+
+    .gallery-bundle.expanded .bundle-expand {
+      grid-template-rows: 1fr;
+    }
+
+    .bundle-inner {
+      overflow: hidden;
+    }
+
+    .bundle-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      padding: 16px;
+      border-top: 1px solid var(--border);
+    }
+
+    .bundle-grid .gallery-item {
+      cursor: pointer;
+    }
+
+    .bundle-preview-carousel .slide-dot,
+    .bundle-preview-carousel .slide-nav {
+      display: none;
+    }
+
+    .gallery-thumb.file-thumb,
+    .gallery-item[data-type="pptx"] .gallery-thumb {
+      aspect-ratio: 16 / 10;
+      padding: 0;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .file-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(200, 255, 0, 0.1);
+      border: 1px solid rgba(200, 255, 0, 0.25);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .file-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .gallery-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+
+    .gallery-item:hover {
+      border-color: rgba(200, 255, 0, 0.3);
+      transform: translateY(-4px);
+    }
+
+    .gallery-item.hidden { display: none; }
+
+    .hidden { display: none !important; }
+
+    .gallery-thumb {
+      aspect-ratio: 1;
+      background: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow: hidden;
+    }
+
+    .gallery-thumb img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      transition: transform 0.4s;
+    }
+
+    .gallery-item:hover .gallery-thumb img { transform: scale(1.05); }
+
+    .gallery-thumb.pdf-thumb {
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .gallery-item[data-type="pdf"] .gallery-thumb {
+      aspect-ratio: 16 / 10;
+      padding: 0;
+    }
+
+    .slide-carousel {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0d0d0f;
+    }
+
+    .slide-carousel .slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+      pointer-events: none;
+    }
+
+    .slide-carousel .slide.active {
+      opacity: 1;
+    }
+
+    .slide-dots {
+      position: absolute;
+      bottom: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      z-index: 2;
+    }
+
+    .slide-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .slide-dot.active {
+      background: var(--accent);
+      width: 18px;
+      border-radius: 3px;
+    }
+
+    .slide-counter {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 2;
+      font-size: 0.6875rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      padding: 4px 8px;
+      border-radius: 6px;
+      background: rgba(0, 0, 0, 0.55);
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    .slide-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 3;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.55);
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s, background 0.2s, border-color 0.2s;
+    }
+
+    .slide-carousel:hover .slide-nav {
+      opacity: 1;
+    }
+
+    .slide-nav:hover {
+      background: rgba(200, 255, 0, 0.15);
+      border-color: rgba(200, 255, 0, 0.4);
+      color: var(--accent);
+    }
+
+    .slide-prev { left: 8px; }
+    .slide-next { right: 8px; }
+
+    .pdf-icon {
+      width: 64px;
+      height: 64px;
+      background: rgba(200, 255, 0, 0.1);
+      border: 1px solid rgba(200, 255, 0, 0.25);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .pdf-label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+
+    .gallery-info { padding: 20px; }
+
+    .gallery-info h3 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .gallery-info p {
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 24px;
+      background: var(--surface);
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+    }
+
+    .empty-state span {
+      display: block;
+      font-size: 2rem;
+      margin-bottom: 12px;
+      opacity: 0.5;
+    }
+
+    .contact-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: calc(var(--radius) * 1.5);
+      padding: 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .contact-box::before {
+      content: "";
+      position: absolute;
+      top: -50%; left: 50%;
+      transform: translateX(-50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(200, 255, 0, 0.08), transparent 70%);
+      pointer-events: none;
+    }
+
+    .contact-box h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      font-weight: 400;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .contact-box h2 em { font-style: italic; color: var(--accent); }
+
+    .contact-box > p {
+      color: var(--muted);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      position: relative;
+    }
+
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      position: relative;
+    }
+
+    .contact-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 16px 28px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .contact-link:hover {
+      border-color: rgba(200, 255, 0, 0.3);
+      background: var(--accent-dim);
+    }
+
+    footer {
+      padding: 40px 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .footer-inner a { color: var(--muted); transition: color 0.2s; }
+    .footer-inner a:hover { color: var(--accent); }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+
+    .lightbox.open { opacity: 1; visibility: visible; }
+
+    .lightbox-inner {
+      max-width: 90vw;
+      max-height: 90vh;
+      text-align: center;
+    }
+
+    .lightbox-inner.wide {
+      width: min(960px, 90vw);
+    }
+
+    .lightbox-inner img {
+      max-width: 100%;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 8px;
+    }
+
+    .lightbox-inner iframe {
+      width: 100%;
+      height: 80vh;
+      border: none;
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .lightbox-caption {
+      margin-top: 16px;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 24px; right: 24px;
+      width: 48px; height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .lightbox-close:hover { background: var(--surface-2); }
+
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface);
+      color: var(--text);
+      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s;
+    }
+
+    .lightbox-nav:hover {
+      background: var(--surface-2);
+      border-color: rgba(200, 255, 0, 0.3);
+      color: var(--accent);
+    }
+
+    .lightbox-prev { left: 24px; }
+    .lightbox-next { right: 24px; }
+
+    .lightbox-counter {
+      margin-top: 8px;
+      font-size: 0.875rem;
+      color: var(--muted);
+    }
+
+    .lightbox-download {
+      display: inline-block;
+      margin-top: 12px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .lightbox-download:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid, .about-grid { grid-template-columns: 1fr; gap: 48px; }
+      .hero-visual { max-width: 100%; margin: 0 auto; }
+      .skills-grid, .gallery, .bundle-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      nav {
+        display: none;
+        position: absolute;
+        top: 100%; left: 0; right: 0;
+        flex-direction: column;
+        gap: 0;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 24px;
+      }
+
+      nav.open { display: flex; }
+
+      nav a {
+        padding: 12px 0;
+        border-bottom: 1px solid var(--border);
+      }
+
+      nav a:last-child { border-bottom: none; }
+
+      .nav-toggle { display: block; }
+      .gallery, .skills-grid, .bundle-grid { grid-template-columns: 1fr; }
+      .about-stats { grid-template-columns: 1fr; }
+      .contact-box { padding: 40px 24px; }
+      .slide-nav { opacity: 1; width: 30px; height: 30px; }
+
+      .footer-inner {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header id="header">
+    <div class="container header-inner">
+      <a href="#" class="logo">Андрей.</a>
+      <button class="nav-toggle" id="navToggle" aria-label="Меню">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+      <nav id="nav">
+        <a href="#about">Обо мне</a>
+        <a href="#skills">Навыки</a>
+        <a href="#works">Работы</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="hero-badge">Графический дизайнер</div>
+          <h1>Создаю <em>визуал</em> с характером</h1>
+          <p class="hero-desc">
+            Векторная иллюстрация, логотипы, оформление соцсетей и презентации.
+            Работаю в Figma, PowerPoint и Adobe Illustrator.
+          </p>
+          <div class="hero-actions">
+            <a href="#works" class="btn btn-primary">Смотреть работы →</a>
+            <a href="#contact" class="btn btn-ghost">Связаться</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div class="hero-showcase">
+            <img src="works/vector/Group 695.png" alt="Эмблема — трёхглавая гидра">
+          </div>
+          <div class="hero-float hero-float-1">
+            <strong>80</strong>
+            работ в портфолио
+          </div>
+          <div class="hero-float hero-float-2">
+            <strong>4</strong>
+            направления
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container">
+        <div class="about-grid reveal">
+          <div>
+            <div class="section-label">Обо мне</div>
+            <h2 class="section-title">Превращаю идеи в запоминающийся дизайн</h2>
+          </div>
+          <div class="about-text">
+            <p>
+              Привет! Я Андрей — графический дизайнер. Работаю с векторной графикой:
+              создаю иллюстрации, логотипы, знаки отличия, постеры и оформление для соцсетей.
+            </p>
+            <p>
+              Люблю экспериментировать со стилями — от минималистичных стикеров
+              до low-poly иллюстраций и постеров для студенческих мероприятий.
+              Работаю в Figma, PowerPoint и Adobe Illustrator.
+            </p>
+            <div class="about-stats">
+              <div class="stat">
+                <div class="stat-value">44</div>
+                <div class="stat-label">Работ для соцсетей</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">26</div>
+                <div class="stat-label">Графических работ</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">10</div>
+                <div class="stat-label">Презентаций</div>
+              </div>
+              <div class="stat">
+                <div class="stat-value">20</div>
+                <div class="stat-label">Проектов в галерее</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <div class="section-label reveal">Навыки</div>
+        <h2 class="section-title reveal">Инструменты, с которыми работаю</h2>
+        <div class="tools-row reveal">
+          <div class="tools-list">
+            <span class="tool-chip"><span class="tool-chip-dot"></span>Figma</span>
+            <span class="tool-chip"><span class="tool-chip-dot"></span>PowerPoint</span>
+            <span class="tool-chip"><span class="tool-chip-dot"></span>Adobe Illustrator</span>
+          </div>
+        </div>
+
+        <div class="section-label reveal">Услуги</div>
+        <h2 class="section-title reveal">Чем занимаюсь</h2>
+        <div class="skills-grid">
+          <div class="skill-card reveal">
+            <div class="skill-icon">✏️</div>
+            <h3>Отрисовка в векторе</h3>
+            <p>Иллюстрации, стикеры, портреты, эмблемы и постеры в векторном формате.</p>
+            <div class="tags">
+              <span class="tag">Adobe Illustrator</span>
+              <span class="tag">Figma</span>
+            </div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">📱</div>
+            <h3>Оформление соцсетей</h3>
+            <p>Обложки, сторис, посты и визуальный стиль для Instagram, VK и Telegram.</p>
+            <div class="tags">
+              <span class="tag">Figma</span>
+              <span class="tag">Adobe Illustrator</span>
+            </div>
+          </div>
+          <div class="skill-card reveal">
+            <div class="skill-icon">📊</div>
+            <h3>Презентации</h3>
+            <p>Дизайн слайдов для выступлений, отчётов и питч-деков с единым визуальным стилем.</p>
+            <div class="tags">
+              <span class="tag">PowerPoint</span>
+              <span class="tag">Figma</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="works">
+      <div class="container">
+        <div class="section-label reveal">Портфолио</div>
+        <h2 class="section-title reveal">Мои работы</h2>
+
+        <div class="filters reveal">
+          <button class="filter-btn active" data-filter="all">Все</button>
+          <button class="filter-btn" data-filter="social">Соцсети</button>
+          <button class="filter-btn" data-filter="vector">Иллюстрации</button>
+          <button class="filter-btn" data-filter="branding">Брендинг</button>
+          <button class="filter-btn" data-filter="presentations">Презентации</button>
+        </div>
+
+        <div class="gallery" id="gallery">
+
+          <article class="gallery-item reveal" data-category="social" data-type="carousel"
+            data-slides="works/social/spika-1/Frame 1.png|works/social/spika-1/Frame 2.png|works/social/spika-1/Frame 3.png|works/social/spika-1/Frame 4.png|works/social/spika-1/Frame 5.png|works/social/spika-1/Frame 33.png"
+            data-title="Как искать товар на 1688.com">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/social/spika-1/Frame 1.png" alt="Слайд 1"><img class="slide" src="works/social/spika-1/Frame 2.png" alt="Слайд 2"><img class="slide" src="works/social/spika-1/Frame 3.png" alt="Слайд 3"><img class="slide" src="works/social/spika-1/Frame 4.png" alt="Слайд 4"><img class="slide" src="works/social/spika-1/Frame 5.png" alt="Слайд 5"><img class="slide" src="works/social/spika-1/Frame 33.png" alt="Слайд 6">
+                <span class="slide-counter">1 / 6</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button><button class="slide-dot" aria-label="Слайд 6"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Как искать товар на 1688.com</h3>
+              <p>Spika Logistics · серия 1 · 6 работ</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="social" data-type="carousel"
+            data-slides="works/social/spika-2/Frame 10.png|works/social/spika-2/Frame 11.png|works/social/spika-2/Frame 12.png|works/social/spika-2/Frame 16.png|works/social/spika-2/Frame 17.png|works/social/spika-2/Frame 34.png"
+            data-title="1688.com — продолжение">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/social/spika-2/Frame 10.png" alt="Слайд 1"><img class="slide" src="works/social/spika-2/Frame 11.png" alt="Слайд 2"><img class="slide" src="works/social/spika-2/Frame 12.png" alt="Слайд 3"><img class="slide" src="works/social/spika-2/Frame 16.png" alt="Слайд 4"><img class="slide" src="works/social/spika-2/Frame 17.png" alt="Слайд 5"><img class="slide" src="works/social/spika-2/Frame 34.png" alt="Слайд 6">
+                <span class="slide-counter">1 / 6</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button><button class="slide-dot" aria-label="Слайд 6"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>1688.com — продолжение</h3>
+              <p>Spika Logistics · серия 2 · 6 работ</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="social" data-type="carousel"
+            data-slides="works/social/spika-3/Frame 19.png|works/social/spika-3/Frame 28.png|works/social/spika-3/Frame 29.png|works/social/spika-3/Frame 30.png|works/social/spika-3/Frame 31.png|works/social/spika-3/Frame 32.png|works/social/spika-3/Frame 35.png"
+            data-title="1688.com — финал серии">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/social/spika-3/Frame 19.png" alt="Слайд 1"><img class="slide" src="works/social/spika-3/Frame 28.png" alt="Слайд 2"><img class="slide" src="works/social/spika-3/Frame 29.png" alt="Слайд 3"><img class="slide" src="works/social/spika-3/Frame 30.png" alt="Слайд 4"><img class="slide" src="works/social/spika-3/Frame 31.png" alt="Слайд 5"><img class="slide" src="works/social/spika-3/Frame 32.png" alt="Слайд 6"><img class="slide" src="works/social/spika-3/Frame 35.png" alt="Слайд 7">
+                <span class="slide-counter">1 / 7</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button><button class="slide-dot" aria-label="Слайд 6"></button><button class="slide-dot" aria-label="Слайд 7"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>1688.com — финал серии</h3>
+              <p>Spika Logistics · серия 3 · 7 работ</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="social" data-type="carousel"
+            data-slides="works/social/nastavnik/1.png|works/social/nastavnik/2.png|works/social/nastavnik/3.png|works/social/nastavnik/4.png|works/social/nastavnik/5.png"
+            data-title="Наставник и СО.Выезд">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/social/nastavnik/1.png" alt="Слайд 1"><img class="slide" src="works/social/nastavnik/2.png" alt="Слайд 2"><img class="slide" src="works/social/nastavnik/3.png" alt="Слайд 3"><img class="slide" src="works/social/nastavnik/4.png" alt="Слайд 4"><img class="slide" src="works/social/nastavnik/5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Наставник и СО.Выезд</h3>
+              <p>Посты · студотряды · 5 работ</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="social" data-type="carousel"
+            data-slides="works/social/konkurs/Конкурс_1.png|works/social/konkurs/Конкурс_2.png|works/social/konkurs/Конкурс_3.png|works/social/konkurs/Конкурс_4.png|works/social/konkurs/Конкурс_5.png"
+            data-title="Конкурс">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/social/konkurs/Конкурс_1.png" alt="Слайд 1"><img class="slide" src="works/social/konkurs/Конкурс_2.png" alt="Слайд 2"><img class="slide" src="works/social/konkurs/Конкурс_3.png" alt="Слайд 3"><img class="slide" src="works/social/konkurs/Конкурс_4.png" alt="Слайд 4"><img class="slide" src="works/social/konkurs/Конкурс_5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Конкурс</h3>
+              <p>Серия постов · студотряды · 5 работ</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="social" data-type="carousel"
+            data-slides="works/social/misc-posts/1.png|works/social/misc-posts/2.png|works/social/misc-posts/8.png|works/social/misc-posts/10.png|works/social/misc-posts/3.2.png|works/social/misc-posts/4.1.png|works/social/misc-posts/5.1.png|works/social/misc-posts/6.2.png|works/social/misc-posts/7.2.png|works/social/misc-posts/9.2.png"
+            data-title="Разные посты">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/social/misc-posts/1.png" alt="Слайд 1"><img class="slide" src="works/social/misc-posts/2.png" alt="Слайд 2"><img class="slide" src="works/social/misc-posts/8.png" alt="Слайд 3"><img class="slide" src="works/social/misc-posts/10.png" alt="Слайд 4"><img class="slide" src="works/social/misc-posts/3.2.png" alt="Слайд 5"><img class="slide" src="works/social/misc-posts/4.1.png" alt="Слайд 6"><img class="slide" src="works/social/misc-posts/5.1.png" alt="Слайд 7"><img class="slide" src="works/social/misc-posts/6.2.png" alt="Слайд 8"><img class="slide" src="works/social/misc-posts/7.2.png" alt="Слайд 9"><img class="slide" src="works/social/misc-posts/9.2.png" alt="Слайд 10">
+                <span class="slide-counter">1 / 10</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button><button class="slide-dot" aria-label="Слайд 6"></button><button class="slide-dot" aria-label="Слайд 7"></button><button class="slide-dot" aria-label="Слайд 8"></button><button class="slide-dot" aria-label="Слайд 9"></button><button class="slide-dot" aria-label="Слайд 10"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Разные посты</h3>
+              <p>Оформление ленты · 10 работ</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="social" data-type="carousel"
+            data-slides="works/social/single-post/Group 2085662127.png"
+            data-title="Пост · коллаж">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/social/single-post/Group 2085662127.png" alt="Слайд 1">
+                <span class="slide-counter">1 / 1</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Пост · коллаж</h3>
+              <p>Оформление ленты · 1 работа</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="social" data-type="carousel"
+            data-slides="works/social/stories/1.2.png|works/social/stories/1.png|works/social/stories/1__3-1.png|works/social/stories/1__3.png"
+            data-title="Stories · недвижимость">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/social/stories/1.2.png" alt="Слайд 1"><img class="slide" src="works/social/stories/1.png" alt="Слайд 2"><img class="slide" src="works/social/stories/1__3-1.png" alt="Слайд 3"><img class="slide" src="works/social/stories/1__3.png" alt="Слайд 4">
+                <span class="slide-counter">1 / 4</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Stories · недвижимость</h3>
+              <p>Вертикальные сторис · 4 работы</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="vector" data-type="carousel"
+            data-slides="works/vector/Group 695.png|works/vector/znak-servo.png|works/vector/Group 618.png|works/vector/Group 127.png|works/vector/A5 - 8.png|works/vector/A5 - 6.png|works/vector/Group 66.png"
+            data-title="Отрисовка в векторе">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/vector/Group 695.png" alt="Слайд 1"><img class="slide" src="works/vector/znak-servo.png" alt="Слайд 2"><img class="slide" src="works/vector/Group 618.png" alt="Слайд 3"><img class="slide" src="works/vector/Group 127.png" alt="Слайд 4"><img class="slide" src="works/vector/A5 - 8.png" alt="Слайд 5"><img class="slide" src="works/vector/A5 - 6.png" alt="Слайд 6"><img class="slide" src="works/vector/Group 66.png" alt="Слайд 7">
+                <span class="slide-counter">1 / 7</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button><button class="slide-dot" aria-label="Слайд 6"></button><button class="slide-dot" aria-label="Слайд 7"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Отрисовка в векторе</h3>
+              <p>Иллюстрации, знаки отличия, стикеры · 7 работ</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="branding" data-type="carousel"
+            data-slides="works/logos/Frame 767.png|works/logos/Frame 773.png|works/logos/Group 12.png|works/logos/Group 621.png|works/logos/Group 67.png|works/logos/Картинка для сообщения.png|works/logos/ЛОГОТИП ДРУЗЬЯ ПЛАТОВА.png|works/logos/Логотив СО.Выезд.png|works/logos/Логотип для протоколов.png"
+            data-title="Логотипы">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/logos/Frame 767.png" alt="Слайд 1"><img class="slide" src="works/logos/Frame 773.png" alt="Слайд 2"><img class="slide" src="works/logos/Group 12.png" alt="Слайд 3"><img class="slide" src="works/logos/Group 621.png" alt="Слайд 4"><img class="slide" src="works/logos/Group 67.png" alt="Слайд 5"><img class="slide" src="works/logos/Картинка для сообщения.png" alt="Слайд 6"><img class="slide" src="works/logos/ЛОГОТИП ДРУЗЬЯ ПЛАТОВА.png" alt="Слайд 7"><img class="slide" src="works/logos/Логотив СО.Выезд.png" alt="Слайд 8"><img class="slide" src="works/logos/Логотип для протоколов.png" alt="Слайд 9">
+                <span class="slide-counter">1 / 9</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button><button class="slide-dot" aria-label="Слайд 6"></button><button class="slide-dot" aria-label="Слайд 7"></button><button class="slide-dot" aria-label="Слайд 8"></button><button class="slide-dot" aria-label="Слайд 9"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Логотипы</h3>
+              <p>Фирменные знаки и эмблемы · 9 работ</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="branding" data-type="carousel"
+            data-slides="works/icons/Frame 15.png|works/icons/Frame 16.png|works/icons/Frame 17.png|works/icons/Frame 18.png|works/icons/Frame 32.png|works/icons/Frame 33.png|works/icons/Frame 34.png|works/icons/Frame 35.png|works/icons/Frame 36.png|works/icons/Frame 37.png"
+            data-title="Иконки">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/icons/Frame 15.png" alt="Слайд 1"><img class="slide" src="works/icons/Frame 16.png" alt="Слайд 2"><img class="slide" src="works/icons/Frame 17.png" alt="Слайд 3"><img class="slide" src="works/icons/Frame 18.png" alt="Слайд 4"><img class="slide" src="works/icons/Frame 32.png" alt="Слайд 5"><img class="slide" src="works/icons/Frame 33.png" alt="Слайд 6"><img class="slide" src="works/icons/Frame 34.png" alt="Слайд 7"><img class="slide" src="works/icons/Frame 35.png" alt="Слайд 8"><img class="slide" src="works/icons/Frame 36.png" alt="Слайд 9"><img class="slide" src="works/icons/Frame 37.png" alt="Слайд 10">
+                <span class="slide-counter">1 / 10</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button><button class="slide-dot" aria-label="Слайд 6"></button><button class="slide-dot" aria-label="Слайд 7"></button><button class="slide-dot" aria-label="Слайд 8"></button><button class="slide-dot" aria-label="Слайд 9"></button><button class="slide-dot" aria-label="Слайд 10"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Иконки</h3>
+              <p>Набор для презентаций и материалов · 10 работ</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="presentations" data-type="pdf"
+            data-src="works/presentations/bol-she-chem-rabota.pdf"
+            data-title="Больше, чем просто работа">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/presentations/previews/bol-she-chem-rabota/slide-1.png" alt="Слайд 1"><img class="slide" src="works/presentations/previews/bol-she-chem-rabota/slide-2.png" alt="Слайд 2"><img class="slide" src="works/presentations/previews/bol-she-chem-rabota/slide-3.png" alt="Слайд 3"><img class="slide" src="works/presentations/previews/bol-she-chem-rabota/slide-4.png" alt="Слайд 4"><img class="slide" src="works/presentations/previews/bol-she-chem-rabota/slide-5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Больше, чем просто работа</h3>
+              <p>Дизайн слайдов · PDF</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="presentations" data-type="pdf"
+            data-src="works/presentations/konkurs-komand-vuzov.pdf"
+            data-title="Конкурс команд ВУЗов">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/presentations/previews/konkurs-komand-vuzov/slide-1.png" alt="Слайд 1"><img class="slide" src="works/presentations/previews/konkurs-komand-vuzov/slide-2.png" alt="Слайд 2"><img class="slide" src="works/presentations/previews/konkurs-komand-vuzov/slide-3.png" alt="Слайд 3"><img class="slide" src="works/presentations/previews/konkurs-komand-vuzov/slide-4.png" alt="Слайд 4"><img class="slide" src="works/presentations/previews/konkurs-komand-vuzov/slide-5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Конкурс команд ВУЗов</h3>
+              <p>Молодёжная политика · PDF</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="presentations" data-type="pdf"
+            data-src="works/presentations/profilaktika-ekstremizma.pdf"
+            data-title="Профилактика экстремизма">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/presentations/previews/profilaktika-ekstremizma/slide-1.png" alt="Слайд 1"><img class="slide" src="works/presentations/previews/profilaktika-ekstremizma/slide-2.png" alt="Слайд 2"><img class="slide" src="works/presentations/previews/profilaktika-ekstremizma/slide-3.png" alt="Слайд 3"><img class="slide" src="works/presentations/previews/profilaktika-ekstremizma/slide-4.png" alt="Слайд 4"><img class="slide" src="works/presentations/previews/profilaktika-ekstremizma/slide-5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Профилактика экстремизма</h3>
+              <p>Структурные подразделения ВУЗа · PDF</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="presentations" data-type="pdf"
+            data-src="works/presentations/grant-so-znanie.pdf"
+            data-title="Грант СО.Знание">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/presentations/previews/grant-so-znanie/slide-1.png" alt="Слайд 1"><img class="slide" src="works/presentations/previews/grant-so-znanie/slide-2.png" alt="Слайд 2"><img class="slide" src="works/presentations/previews/grant-so-znanie/slide-3.png" alt="Слайд 3"><img class="slide" src="works/presentations/previews/grant-so-znanie/slide-4.png" alt="Слайд 4"><img class="slide" src="works/presentations/previews/grant-so-znanie/slide-5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Грант СО.Знание</h3>
+              <p>Студенческие отряды · PDF</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="presentations" data-type="pdf"
+            data-src="works/presentations/podderzhka-student-semei.pdf"
+            data-title="Поддержка студенческих семей">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/presentations/previews/podderzhka-student-semei/slide-1.png" alt="Слайд 1"><img class="slide" src="works/presentations/previews/podderzhka-student-semei/slide-2.png" alt="Слайд 2"><img class="slide" src="works/presentations/previews/podderzhka-student-semei/slide-3.png" alt="Слайд 3"><img class="slide" src="works/presentations/previews/podderzhka-student-semei/slide-4.png" alt="Слайд 4"><img class="slide" src="works/presentations/previews/podderzhka-student-semei/slide-5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Поддержка студенческих семей</h3>
+              <p>Меры поддержки · PDF</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="presentations" data-type="pdf"
+            data-src="works/presentations/napravleniya-deyatelnosti-prorektor.pdf"
+            data-title="Направления деятельности">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/presentations/previews/napravleniya-deyatelnosti-prorektor/slide-1.png" alt="Слайд 1"><img class="slide" src="works/presentations/previews/napravleniya-deyatelnosti-prorektor/slide-2.png" alt="Слайд 2"><img class="slide" src="works/presentations/previews/napravleniya-deyatelnosti-prorektor/slide-3.png" alt="Слайд 3"><img class="slide" src="works/presentations/previews/napravleniya-deyatelnosti-prorektor/slide-4.png" alt="Слайд 4"><img class="slide" src="works/presentations/previews/napravleniya-deyatelnosti-prorektor/slide-5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Направления деятельности</h3>
+              <p>Молодёжная и социальная политика · PDF</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="presentations" data-type="carousel"
+            data-slides="works/presentations/previews/plan-razvitiya-2024/slide-1.png|works/presentations/previews/plan-razvitiya-2024/slide-2.png|works/presentations/previews/plan-razvitiya-2024/slide-3.png|works/presentations/previews/plan-razvitiya-2024/slide-4.png|works/presentations/previews/plan-razvitiya-2024/slide-5.png"
+            data-file="works/presentations/plan-razvitiya-2024.pptx"
+            data-title="План развития 2024">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/presentations/previews/plan-razvitiya-2024/slide-1.png" alt="Слайд 1"><img class="slide" src="works/presentations/previews/plan-razvitiya-2024/slide-2.png" alt="Слайд 2"><img class="slide" src="works/presentations/previews/plan-razvitiya-2024/slide-3.png" alt="Слайд 3"><img class="slide" src="works/presentations/previews/plan-razvitiya-2024/slide-4.png" alt="Слайд 4"><img class="slide" src="works/presentations/previews/plan-razvitiya-2024/slide-5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>План развития 2024</h3>
+              <p>Стратегия ВУЗа · PowerPoint</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="presentations" data-type="carousel"
+            data-slides="works/presentations/previews/rektorskaya/slide-1.png|works/presentations/previews/rektorskaya/slide-2.png|works/presentations/previews/rektorskaya/slide-3.png|works/presentations/previews/rektorskaya/slide-4.png|works/presentations/previews/rektorskaya/slide-5.png"
+            data-file="works/presentations/rektorskaya.pptx"
+            data-title="Ректорская">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/presentations/previews/rektorskaya/slide-1.png" alt="Слайд 1"><img class="slide" src="works/presentations/previews/rektorskaya/slide-2.png" alt="Слайд 2"><img class="slide" src="works/presentations/previews/rektorskaya/slide-3.png" alt="Слайд 3"><img class="slide" src="works/presentations/previews/rektorskaya/slide-4.png" alt="Слайд 4"><img class="slide" src="works/presentations/previews/rektorskaya/slide-5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Ректорская</h3>
+              <p>Официальная презентация · PowerPoint</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="presentations" data-type="pdf"
+            data-src="works/presentations/modnyj-buket.pdf"
+            data-title="Модный букет">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/presentations/previews/modnyj-buket/slide-1.png" alt="Слайд 1"><img class="slide" src="works/presentations/previews/modnyj-buket/slide-2.png" alt="Слайд 2"><img class="slide" src="works/presentations/previews/modnyj-buket/slide-3.png" alt="Слайд 3"><img class="slide" src="works/presentations/previews/modnyj-buket/slide-4.png" alt="Слайд 4">
+                <span class="slide-counter">1 / 4</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Модный букет</h3>
+              <p>Креативный проект · PDF</p>
+            </div>
+          </article>
+          <article class="gallery-item reveal" data-category="presentations" data-type="pdf"
+            data-src="works/presentations/spika.pdf"
+            data-title="Спика">
+            <div class="gallery-thumb">
+              <div class="slide-carousel">
+                <img class="slide active" src="works/presentations/previews/spika/slide-1.png" alt="Слайд 1"><img class="slide" src="works/presentations/previews/spika/slide-2.png" alt="Слайд 2"><img class="slide" src="works/presentations/previews/spika/slide-3.png" alt="Слайд 3"><img class="slide" src="works/presentations/previews/spika/slide-4.png" alt="Слайд 4"><img class="slide" src="works/presentations/previews/spika/slide-5.png" alt="Слайд 5">
+                <span class="slide-counter">1 / 5</span>
+                <div class="slide-dots"><button class="slide-dot active" aria-label="Слайд 1"></button><button class="slide-dot" aria-label="Слайд 2"></button><button class="slide-dot" aria-label="Слайд 3"></button><button class="slide-dot" aria-label="Слайд 4"></button><button class="slide-dot" aria-label="Слайд 5"></button></div>
+              </div>
+            </div>
+            <div class="gallery-info">
+              <h3>Спика</h3>
+              <p>Логистика из Китая · PDF</p>
+            </div>
+          </article>
+
+          <div class="empty-state hidden" id="emptyState">
+            <span>📂</span>
+            Работы в этой категории скоро появятся
+          </div>
+
+        </div>
+
+        </div>
+
+        </div>
+
+        </div>
+
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="contact-box reveal">
+          <h2>Давайте <em>работать</em> вместе</h2>
+          <p>Нужен логотип, иллюстрация или оформление? Напишите — обсудим задачу.</p>
+          <div class="contact-links">
+            <a href="mailto:andryches@gmail.com" class="contact-link">✉️ andryches@gmail.com</a>
+            <a href="https://vk.com/andrychess" class="contact-link" target="_blank" rel="noopener">📘 VK · @andrychess</a>
+            <a href="https://max.ru/u/f9LHodD0cOK2aMHnbSYl99ctayZWMfTz1a0R5eGFbwTDvl2l9YsrGNcV2ho" class="contact-link" target="_blank" rel="noopener">💬 Max</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <span>© 2026 Пономарев Андрей. Все права защищены.</span>
+      <a href="#header">Наверх ↑</a>
+    </div>
+  </footer>
+
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Закрыть">×</button>
+    <button class="lightbox-nav lightbox-prev hidden" id="lightboxPrev" aria-label="Предыдущий">‹</button>
+    <button class="lightbox-nav lightbox-next hidden" id="lightboxNext" aria-label="Следующий">›</button>
+    <div class="lightbox-inner" id="lightboxInner">
+      <img src="" alt="" id="lightboxImg">
+      <p class="lightbox-caption" id="lightboxCaption"></p>
+      <p class="lightbox-counter hidden" id="lightboxCounter"></p>
+    </div>
+  </div>
+
+  <script>
+    const header = document.getElementById('header');
+    const navToggle = document.getElementById('navToggle');
+    const nav = document.getElementById('nav');
+
+    window.addEventListener('scroll', () => {
+      header.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    navToggle.addEventListener('click', () => nav.classList.toggle('open'));
+    nav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => nav.classList.remove('open'));
+    });
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      new IntersectionObserver(
+        entries => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+        { threshold: 0.15 }
+      ).observe(el);
+    });
+
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const topLevelItems = document.querySelectorAll('#gallery > .gallery-item');
+    const lightboxItems = document.querySelectorAll('.gallery-item[data-src], .gallery-item[data-slides]');
+    const emptyState = document.getElementById('emptyState');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        let visible = 0;
+
+        topLevelItems.forEach(item => {
+          const show = filter === 'all' || item.dataset.category === filter;
+          item.classList.toggle('hidden', !show);
+          if (show) visible++;
+        });
+
+        emptyState.classList.toggle('hidden', visible > 0);
+      });
+    });
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxInner = document.getElementById('lightboxInner');
+    const lightboxImg = document.getElementById('lightboxImg');
+    const lightboxCaption = document.getElementById('lightboxCaption');
+    const lightboxClose = document.getElementById('lightboxClose');
+    const lightboxPrev = document.getElementById('lightboxPrev');
+    const lightboxNext = document.getElementById('lightboxNext');
+    const lightboxCounter = document.getElementById('lightboxCounter');
+    let lightboxFrame = null;
+    let lightboxDownload = null;
+    let carouselSlides = [];
+    let carouselIndex = 0;
+
+    function showCarouselSlide(index) {
+      if (!carouselSlides.length) return;
+      carouselIndex = (index + carouselSlides.length) % carouselSlides.length;
+      lightboxImg.src = carouselSlides[carouselIndex];
+      lightboxCounter.textContent = `${carouselIndex + 1} / ${carouselSlides.length}`;
+    }
+
+    function setCarouselMode(slides, startIndex = 0) {
+      carouselSlides = slides;
+      carouselIndex = startIndex;
+      lightboxPrev.classList.toggle('hidden', slides.length <= 1);
+      lightboxNext.classList.toggle('hidden', slides.length <= 1);
+      lightboxCounter.classList.toggle('hidden', slides.length <= 1);
+      showCarouselSlide(startIndex);
+    }
+
+    lightboxItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const title = item.dataset.title;
+        const src = item.dataset.src;
+        const type = item.dataset.type || 'image';
+
+        lightboxCaption.textContent = title;
+        carouselSlides = [];
+        if (lightboxDownload) {
+          lightboxDownload.remove();
+          lightboxDownload = null;
+        }
+
+        if (type === 'pdf') {
+          lightboxImg.style.display = 'none';
+          lightboxInner.classList.add('wide');
+          lightboxPrev.classList.add('hidden');
+          lightboxNext.classList.add('hidden');
+          lightboxCounter.classList.add('hidden');
+          lightboxFrame = document.createElement('iframe');
+          lightboxFrame.src = src;
+          lightboxFrame.title = title;
+          lightboxInner.insertBefore(lightboxFrame, lightboxCaption);
+        } else if (type === 'carousel') {
+          const slides = item.dataset.slides.split('|');
+          const activeSlide = item.querySelector('.slide.active');
+          const activeIndex = activeSlide
+            ? Array.from(item.querySelectorAll('.slide')).indexOf(activeSlide)
+            : 0;
+          lightboxInner.classList.remove('wide');
+          lightboxImg.style.display = 'block';
+          lightboxImg.alt = title;
+          setCarouselMode(slides, activeIndex);
+          if (item.dataset.file) {
+            lightboxDownload = document.createElement('a');
+            lightboxDownload.href = item.dataset.file;
+            lightboxDownload.textContent = 'Скачать презентацию';
+            lightboxDownload.className = 'lightbox-download';
+            lightboxDownload.download = '';
+            lightboxCaption.insertAdjacentElement('afterend', lightboxDownload);
+          }
+        } else {
+          lightboxInner.classList.remove('wide');
+          lightboxImg.style.display = 'block';
+          lightboxImg.src = src;
+          lightboxImg.alt = title;
+          lightboxPrev.classList.add('hidden');
+          lightboxNext.classList.add('hidden');
+          lightboxCounter.classList.add('hidden');
+        }
+
+        lightbox.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    });
+
+    lightboxPrev.addEventListener('click', e => {
+      e.stopPropagation();
+      showCarouselSlide(carouselIndex - 1);
+    });
+
+    lightboxNext.addEventListener('click', e => {
+      e.stopPropagation();
+      showCarouselSlide(carouselIndex + 1);
+    });
+
+    document.querySelectorAll('.slide-carousel').forEach(carousel => {
+      const slides = carousel.querySelectorAll('.slide');
+      const dots = carousel.querySelectorAll('.slide-dot');
+      const counter = carousel.querySelector('.slide-counter');
+      let current = 0;
+      let timer = null;
+
+      function createNavBtn(direction) {
+        const btn = document.createElement('button');
+        btn.className = `slide-nav slide-${direction}`;
+        btn.type = 'button';
+        btn.setAttribute('aria-label', direction === 'prev' ? 'Предыдущий слайд' : 'Следующий слайд');
+        btn.innerHTML = direction === 'prev'
+          ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 6l-6 6 6 6"/></svg>'
+          : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>';
+        return btn;
+      }
+
+      const prevBtn = createNavBtn('prev');
+      const nextBtn = createNavBtn('next');
+      carousel.appendChild(prevBtn);
+      carousel.appendChild(nextBtn);
+
+      function goTo(index) {
+        slides[current].classList.remove('active');
+        dots[current].classList.remove('active');
+        current = index;
+        slides[current].classList.add('active');
+        dots[current].classList.add('active');
+        if (counter) counter.textContent = `${current + 1} / ${slides.length}`;
+      }
+
+      function next() {
+        goTo((current + 1) % slides.length);
+      }
+
+      function prev() {
+        goTo((current - 1 + slides.length) % slides.length);
+      }
+
+      function start() {
+        stop();
+        timer = setInterval(next, 3500);
+      }
+
+      function stop() {
+        if (timer) {
+          clearInterval(timer);
+          timer = null;
+        }
+      }
+
+      carousel.addEventListener('mouseenter', stop);
+      carousel.addEventListener('mouseleave', start);
+
+      prevBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        prev();
+        start();
+      });
+
+      nextBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        next();
+        start();
+      });
+
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', e => {
+          e.stopPropagation();
+          goTo(i);
+          start();
+        });
+      });
+
+      start();
+    });
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+      lightboxImg.src = '';
+      lightboxImg.style.display = 'block';
+      lightboxInner.classList.remove('wide');
+      carouselSlides = [];
+      lightboxPrev.classList.add('hidden');
+      lightboxNext.classList.add('hidden');
+      lightboxCounter.classList.add('hidden');
+      if (lightboxFrame) {
+        lightboxFrame.remove();
+        lightboxFrame = null;
+      }
+      if (lightboxDownload) {
+        lightboxDownload.remove();
+        lightboxDownload = null;
+      }
+    }
+
+    lightboxClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowLeft' && carouselSlides.length > 1) showCarouselSlide(carouselIndex - 1);
+      if (e.key === 'ArrowRight' && carouselSlides.length > 1) showCarouselSlide(carouselIndex + 1);
+    });
+  </script>
+
+</body>
+</html>
